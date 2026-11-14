@@ -4,7 +4,7 @@
   --scale: 1;
 }
 .dark {
-  --bg: #12161C; --fg: #E8ECF1; --muted: #A9B4C2; --blue: #2B3340; --card: #12161C; --line: #3A4556;
+  --bg: #12161C; --fg: #E8ECF1; --muted: #A9B4C2; --blue: #2B3340; --card: #1A2029; --line: #3A4556;
 }
 * { box-sizing: border-box; }
 html { font-size: calc(16px * var(--scale)); }
@@ -55,3 +55,41 @@ th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line
 .bar { height: 10px; background: #2B3340; border-radius: 6px; overflow: hidden; }
 .bar > span { display: block; height: 100%; background: #5CC8B0; }
 .fail-ex { font-size: .85rem; color: var(--muted); border-left: 3px solid #FF8A80; padding-left: 10px; line-height: 1.4; margin-top: 8px; }
+
+/* ---- chat ---- */
+.chatapp { height: 100dvh; min-height: 0; padding: 12px 14px 10px; gap: 10px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex: none; }
+.top h1 { margin: 0; font-size: 1.5rem; }
+.top .chip { font-size: .78rem; white-space: nowrap; color: var(--muted); border-radius: 999px; padding: 4px 9px; min-height: 0; }
+.note2 { display: flex; gap: 8px; align-items: flex-start; font-size: .78rem; line-height: 1.35; color: var(--warn-fg); background: var(--warn-bg); border: 1px dashed var(--warn-line); border-radius: 10px; padding: 7px 10px; flex: none; }
+.note2 button { flex: none; border: 0; background: transparent; font-size: 1.2rem; line-height: 1; color: inherit; min-width: 32px; min-height: 32px; }
+#log { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 2px; }
+.msg { max-width: 92%; border-radius: 16px; padding: 12px 14px; font-size: 1.15rem; line-height: 1.45; border: 2px solid var(--line); background: var(--card); align-self: flex-start; white-space: pre-wrap; }
+.msg.you { align-self: flex-end; background: #EEF3FA; border-color: #B9CBE5; color: #1B1B1B; }
+.dark .msg.you { background: #1E2A3A; border-color: #35506F; color: var(--fg); }
+.msg.refused { background: #F1EEE8; color: #1B1B1B; }
+.dark .msg.refused { background: var(--card); color: var(--fg); }
+.msg.handoff { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn-fg); }
+.msg .src { font-size: .82rem; color: var(--muted); margin-top: 8px; }
+.msg.handoff .src { color: var(--warn-fg); }
+.hoodbox { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; font-size: .8rem; line-height: 1.4; color: var(--muted); white-space: normal; }
+.msg.handoff .hoodbox { color: var(--warn-fg); }
+.hoodbox .b { font-weight: 700; font-size: .7rem; border: 1px solid; border-radius: 5px; padding: 2px 6px; margin-right: 6px; }
+.hoodbox .ok { color: #5CC8B0; } .hoodbox .warn { color: #F2B84B; }
+.msg.handoff .hoodbox .ok, .msg.handoff .hoodbox .warn { color: #7A4B00; }
+.step2 { margin-top: 4px; }
+.sugs { display: flex; gap: 8px; flex: none; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.sugs::-webkit-scrollbar { display: none; }
+.sugs button { flex: none; white-space: nowrap; font-size: .95rem; border: 2px solid var(--blue); background: var(--card); color: var(--blue); border-radius: 999px; padding: 8px 14px; min-height: 44px; }
+.dark .sugs button { border-color: var(--line); color: var(--fg); }
+.chatapp form { display: flex; gap: 8px; flex: none; }
+.chatapp input { flex: 1; min-width: 0; min-height: 56px; font: inherit; font-size: 1.1rem; padding: 0 14px; border: 2px solid var(--blue); border-radius: 14px; background: var(--card); color: var(--fg); }
+.dark .chatapp input { border-color: var(--line); }
+.send { min-height: 56px; padding: 0 20px; font-size: 1.1rem; font-weight: 700; border: 0; border-radius: 14px; background: var(--blue); color: #fff; }
+.dark .send { background: #2B3340; color: var(--fg); }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex: none; }
+.foot > button { font-size: .95rem; font-weight: 600; min-height: 44px; padding: 0 14px; border-radius: 12px; border: 2px solid var(--blue); background: var(--card); color: var(--blue); }
+.dark .foot > button { border-color: var(--line); color: var(--fg); }
+.foot .sizes { gap: 6px; }
+.foot .sizes button { min-width: 44px; padding: 0; background: var(--card); }
+.dark .foot .sizes button { border-color: var(--line); color: var(--fg); }
