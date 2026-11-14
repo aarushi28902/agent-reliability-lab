@@ -43,8 +43,8 @@ export default function Page() {
   function ask(text) {
     text = text.trim();
     if (!text) return;
-    setShowSugs(false);
     const r = answer(index, text);
+    setShowSugs(r.layer === "clarify" || r.layer === "refused");
     setMessages((m) => [...m, { role: "you", text }, { role: "bot", text: r.reply, r }]);
   }
 

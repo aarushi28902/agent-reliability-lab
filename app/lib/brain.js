@@ -7,11 +7,12 @@ const CLAIMS = {
   "9999": { status: "rejected", detail: "missing police report" },
   "4321": { status: "under review", detail: "since Feb 1 2025, home damage" },
 };
-const SCAM = [/(without|avoid|bypass|skip|dodge|evade)\s+(\w+\s+){0,2}(alerts?|detection|being\s+(flagged|detected|noticed|reported)|checks?)/i, /\b(launder|untraceable)\b/i];
-const HUMAN = /\b(speak|talk)\s+to\s+(a\s+)?(human|person|real\s+agent|agent)\b|\bhuman\b/i;
-const GREET = /^\s*(hi|hello|hey|good (morning|afternoon|evening))\b[\s!.]*$/i;
+const SCAM = [/(without|avoid|bypass|skip|dodge|evade)\s+(\w+\s+){0,2}(alerts?|detection|being\s+(flagged|detected|noticed|reported)|checks?)/i, /\b(launder|untraceable)\b/i, /(without|so)\s+(the\s+)?(bank|anyone|family|police)\s+(\w+\s+)?(knowing|knows|noticing|finding\s+out)/i, /\bkeep\s+(it|this)\s+(a\s+)?secret\b/i];
+const HUMAN = /\b(speak|talk)\s+to\s+(a\s+)?(human|person|real\s+agent|agent)\b|\bhuman\b|\b(speak|talk)\s+(to|with)\s+(someone|somebody|anyone)\b|\bcall\s+me\b|\b(complain\w*|upset|angry|furious|frustrated|not\s+happy|unhappy)\b/i;
+const GREET = /^\s*((hi|hello|hey)(\s+there)?|good (morning|afternoon|evening)|thanks?(\s+you)?(\s+(so|very)\s+much)?|thank\s+you(\s+(so|very)\s+much)?)\b[\s!.]*$/i;
+const THANKS = /^\s*thank/i;
 const CLARIFY_TYPO = "I want to be sure I understand. Could you tell me in a few words what you need help with? I can help with claims, documents, payments and staying safe.";
-const DOMAIN = /\b(claims?|insurance|insurer|polic(y|ies)|premium|excess|cover(ed|age)?|accident|damage|theft|stolen|refund|payments?|scam\w*|fraud\w*|phish\w*|suspicious|swindl\w*)\b/i;
+const DOMAIN = /\b(claims?|insurance|insurer|polic(y|ies)|premium|excess|cover(ed|age)?|accident|damage|theft|stolen|refund|payments?|scam\w*|fraud\w*|phish\w*|suspicious|swindl\w*|car|vehicle|crash|collision|fire|flood\w*|burglar\w*|hospital|doctor|medical|deductible|get\s+(my\s+)?(money|paid)|from\s+(you|maple\s+mutual))\b/i;
 const SORRY = "Sorry, this isn't part of this app. I can only help with questions about claims, documents, payments and staying safe.";
 const THRESHOLD = 2.0, STRONG = 3.0;
 const OFFTOPIC = /\b(poem|joke|story|essay|recipe|song|lyrics|homework|python|javascript)\b/i;
@@ -67,7 +68,7 @@ function search(ix, q, k = 3) {
 function answer(ix, q) {
   const steps = [];
   const done = (o) => Object.assign({ steps }, o);
-  if (GREET.test(q)) { steps.push(["Scope gate", "Greeting, answered directly.", "ok"]); return done({ reply: "Hello! Ask me about claims, documents, payments or staying safe.", layer: "greeting", decision: "pass" }); }
+  if (GREET.test(q)) { steps.push(["Scope gate", "Greeting, answered directly.", "ok"]); return done({ reply: THANKS.test(q) ? "You are welcome! Ask me anything else about claims, documents, payments or staying safe." : "Hello! Ask me about claims, documents, payments or staying safe.", layer: "greeting", decision: "pass" }); }
   for (const p of SCAM) if (p.test(q)) {
     steps.push(["Scope gate", "Message matched a red-flag pattern.", "warn"], ["Rule", "Hand-off forced by code (not left to the AI).", "warn"]);
     return done({ reply: "I can't help with that, and I want to keep you safe. Please never move money or hide it from your bank because someone told you to. I am handing you to a person on our team now.", layer: "handoff", handoff: true, decision: "pass" });
@@ -79,7 +80,7 @@ function answer(ix, q) {
     steps.push(["Scope gate", "Claim number found: " + idm[1], "ok"], ["Tool", "check_claim_status(" + idm[1] + ")", "ok"]);
     return done({ reply: c ? `Claim #${idm[1]} is ${c.status}: ${c.detail}.` : `I could not find claim ${idm[1]}. Please check the number on your letter.`, layer: "tool", decision: "pass" });
   }
-  const statusWords = /\b(claim|payment)\b/i.test(q) && /\b(status|update|progress|where|paid|pay)\b/i.test(q);
+  const statusWords = /\b(claim|payment)\b/i.test(q) && /\b(status|update|progress|where|paid|pay|check|track|tracking|when)\b/i.test(q);
   if (statusWords && !/\b(document|need|file|how)\b/i.test(q)) {
     steps.push(["Scope gate", "In scope: claim status.", "ok"], ["Rule", "No claim number given, so ask one simple question. No tool call.", "ok"]);
     return done({ reply: "I can look that up. What is your claim number? It is on your letter.", layer: "clarify", decision: "pass" });
