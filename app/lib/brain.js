@@ -89,6 +89,10 @@ function answer(ix, q) {
   const strong = !off && (top >= STRONG || (top >= THRESHOLD && matched >= 2));
   const domain = !off && DOMAIN.test(q);
   let why = `Best document score ${top.toFixed(1)}, ${matched} matching word(s).` + (off ? " Off-topic request word found." : "");
+  if (strong && !domain && !statusWords && matched < 2) {
+    steps.push(["Scope gate", why, "warn"], ["Result", "Only one word matched, too vague to guess. Ask one question instead. No AI call used.", "ok"]);
+    return done({ reply: CLARIFY_TYPO, layer: "clarify", decision: "clarify" });
+  }
   if (!(statusWords || strong || domain)) {
     const typos = off ? [] : typoHits(ix, q);
     if (typos.length) {
