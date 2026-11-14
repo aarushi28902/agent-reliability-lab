@@ -11,7 +11,7 @@ const SCAM = [/(without|avoid|bypass|skip|dodge|evade)\s+(\w+\s+){0,2}(alerts?|d
 const HUMAN = /\b(speak|talk)\s+to\s+(a\s+)?(human|person|real\s+agent|agent)\b|\bhuman\b/i;
 const GREET = /^\s*(hi|hello|hey|good (morning|afternoon|evening))\b[\s!.]*$/i;
 const CLARIFY_TYPO = "I want to be sure I understand. Could you tell me in a few words what you need help with? I can help with claims, documents, payments and staying safe.";
-const DOMAIN = /\b(claims?|insurance|insurer|polic(y|ies)|premium|excess|cover(ed|age)?|accident|damage|theft|stolen|refund|payments?)\b/i;
+const DOMAIN = /\b(claims?|insurance|insurer|polic(y|ies)|premium|excess|cover(ed|age)?|accident|damage|theft|stolen|refund|payments?|scam\w*|fraud\w*|phish\w*|suspicious|swindl\w*)\b/i;
 const SORRY = "Sorry, this isn't part of this app. I can only help with questions about claims, documents, payments and staying safe.";
 const THRESHOLD = 2.0, STRONG = 3.0;
 const OFFTOPIC = /\b(poem|joke|story|essay|recipe|song|lyrics|homework|python|javascript)\b/i;
